@@ -568,7 +568,7 @@
             </select>
             <input
               type="number"
-              min="1"
+              min="0"
               value={count}
               className="input material-input"
               onChange={(e) => onCountChange(e, level)}
@@ -599,8 +599,8 @@
 
         componentDidMount() {
           window._t = this;
-          // 自动计算结果
           this.handleCalculate();
+          this.drawSavingsChart(this.state.savings, this.state.normalMaterials);
         }
 
         createMaterialId = () => Math.random().toString(36).slice(2);
@@ -881,6 +881,7 @@
         };
 
         componentDidUpdate(prevProps, prevState) {
+          this.handleCalculate();
           this.drawSavingsChart(this.state.savings, this.state.normalMaterials);
         }
 
