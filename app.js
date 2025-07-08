@@ -126,8 +126,9 @@ class MaterialExchangeCalculator extends React.Component {
       ],
       resultVisible: false,
       resultTarget: 141,
-      resultMaterials: "",
+      resultMaterialsText: "",
       savings: {},
+      savingsMaterialsText: "",
       normalMaterials: {},
       savingPercent: 0,
     };
@@ -245,10 +246,13 @@ class MaterialExchangeCalculator extends React.Component {
       {
         resultVisible: true,
         resultTarget: targetLevel,
-        resultMaterials: Object.entries(specialMaterials)
+        resultMaterialsText: Object.entries(specialMaterials)
           .map(([level, count]) => `${count}个${level}`)
           .join(", "),
         savings,
+        savingsMaterialsText: Object.entries(savings)
+          .map(([level, count]) => `${count}个${level}`)
+          .join(", "),
         normalMaterials,
         savingPercent: (
           (savingsAllCount / normalMaterialsAllCount) *
@@ -265,9 +269,7 @@ class MaterialExchangeCalculator extends React.Component {
     const __specialMaterials = { ...specialMaterials };
     // 初始化节省结果
     const __savings = {};
-    let level = Math.min(
-      ...Object.keys(__specialMaterials).map((_) => +_)
-    );
+    let level = Math.min(...Object.keys(__specialMaterials).map((_) => +_));
 
     //   console.log("smallest level", level);
 
@@ -277,10 +279,7 @@ class MaterialExchangeCalculator extends React.Component {
 
       if (count) {
         // 计算该等级材料在普通兑换路径中的节省
-        const supplementInfo = this.calculateLevelSupplement(
-          level,
-          count
-        );
+        const supplementInfo = this.calculateLevelSupplement(level, count);
 
         //   console.log("level supplementInfo", level, supplementInfo);
 
@@ -469,8 +468,9 @@ class MaterialExchangeCalculator extends React.Component {
       materialInputs,
       resultVisible,
       resultTarget,
-      resultMaterials,
+      resultMaterialsText,
       savings,
+      savingsMaterialsText,
       normalMaterials,
     } = this.state;
 
@@ -586,23 +586,18 @@ class MaterialExchangeCalculator extends React.Component {
                         <span className="text-sm font-medium text-gray-500">
                           使用的特价材料
                         </span>
-                        <div id="resultMaterials" className="font-medium">
-                          {resultMaterials}
+                        <div id="resultMaterialsText" className="font-medium">
+                          {resultMaterialsText}
                         </div>
                       </div>
                     </div>
 
                     <div className="mb-6">
-                      <h3 className="text-lg font-medium mb-3">
-                        节省材料统计
-                      </h3>
+                      <h3 className="text-lg font-medium mb-3">节省材料统计</h3>
                       <div id="savingList" className="space-y-2">
                         {Object.entries(savings).map(
                           ([level, count], index) => (
-                            <div
-                              key={index}
-                              className="saving-item visible"
-                            >
+                            <div key={index} className="saving-item visible">
                               <span
                                 className={`material-icon material-icon-${level}`}
                               >
@@ -618,21 +613,14 @@ class MaterialExchangeCalculator extends React.Component {
                     <div className="border-t border-gray-200 pt-4">
                       <div className="bg-secondary/5 rounded-xl p-4">
                         <div className="flex justify-between items-center">
-                          <span className="font-medium">
-                            总计节省材料
-                          </span>
+                          <span className="font-medium">总计节省材料</span>
                           <div className="flex items-center">
                             <i className="fa-solid fa-star text-secondary mr-2"></i>
                             <span
                               id="totalSaving"
                               className="font-bold text-xl text-secondary"
                             >
-                              {Object.entries(savings)
-                                .filter(([level, count]) => count > 0)
-                                .map(
-                                  ([level, count]) => `${count}个${level}`
-                                )
-                                .join(", ")}
+                              {savingsMaterialsText}
                             </span>
                           </div>
                         </div>
@@ -640,9 +628,7 @@ class MaterialExchangeCalculator extends React.Component {
                     </div>
 
                     <div className="mt-6">
-                      <h3 className="text-lg font-medium mb-3">
-                        节省比例分布
-                      </h3>
+                      <h3 className="text-lg font-medium mb-3">节省比例分布</h3>
                       <div
                         id="chartContainer"
                         className="w-full h-48 bg-gray-50 rounded-lg"
@@ -656,9 +642,7 @@ class MaterialExchangeCalculator extends React.Component {
                     <div className="initial-icon">
                       <i className="fa-solid fa-calculator text-primary text-3xl"></i>
                     </div>
-                    <h3 className="text-xl font-bold mb-3">
-                      请设置兑换参数
-                    </h3>
+                    <h3 className="text-xl font-bold mb-3">请设置兑换参数</h3>
                     <p className="text-gray-500 max-w-md mb-6">
                       输入目标等级和特价材料，点击计算按钮获取节省材料统计
                     </p>
@@ -700,20 +684,16 @@ class MaterialExchangeCalculator extends React.Component {
                         <span className="text-sm font-medium text-gray-500">
                           所需特价材料
                         </span>
-                        <div id="resultMaterials" className="font-medium">
-                          {item.resultMaterials}
+                        <div id="resultMaterialsText" className="font-medium">
+                          {item.resultMaterialsText}
                         </div>
                       </div>
                       <div className="flex justify-between items-center mb-1">
                         <span className="text-sm font-medium text-gray-500">
                           节省材料统计
                         </span>
-                        <div id="resultMaterials" className="font-medium">
-                          {Object.entries(item.savings).map(
-                            ([level, count], index) => (
-                              <span>{`${count}个${level}`}</span>
-                            )
-                          )}
+                        <div id="resultMaterialsText" className="font-medium">
+                          {item.savingsMaterialsText}
                         </div>
                       </div>
                     </div>
@@ -729,9 +709,7 @@ class MaterialExchangeCalculator extends React.Component {
               <div className="footer-section">
                 <div className="flex items-center mb-4">
                   <i className="fa-solid fa-calculator text-primary text-2xl mr-3"></i>
-                  <span className="text-xl font-bold">
-                    材料兑换计算器
-                  </span>
+                  <span className="text-xl font-bold">材料兑换计算器</span>
                 </div>
                 <p className="text-gray-400 text-sm">
                   一个高效、易用的材料兑换计算工具，帮助你在游戏中做出最优的资源管理决策。
