@@ -550,7 +550,7 @@ class MaterialExchangeCalculator extends React.Component {
 
                 <button
                   onClick={this.saveThisResult}
-                  className="btn btn-primary w-full"
+                  className={`btn ${_.isEmpty(this.state.normalMaterials) ? 'btn-disabled' : 'btn-primary'} w-full`}
                 >
                   <i className="fa-solid fa-calculator mr-2"></i>
                   保存本次计算结果
