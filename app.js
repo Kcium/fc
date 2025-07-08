@@ -9,7 +9,7 @@ const EXCHANGE_RULES = [
   { to: 144, from: 143, count: 2 },
   { to: 145, from: 144, count: 2 },
   { to: 146, from: 145, count: 3 },
-  { to: 147, from: 146, count: 2 },
+  { to: 147, from: 146, count: 3 },
   { to: 148, from: 147, count: 2 },
   { to: 149, from: 148, count: 2 },
 ];
