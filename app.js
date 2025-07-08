@@ -427,13 +427,13 @@ class MaterialExchangeCalculator extends React.Component {
     });
   };
 
-  saveThisResult = () => {
+  saveThisResult = _.throttle(() => {
     const { caches, ...otherState } = this.state;
     this.setState({
       ...this.createState(),
       caches: [...caches, otherState],
     });
-  };
+  }, 100, { leading: true, trailing: false });
 
   componentDidUpdate(prevProps, prevState) {
     if (
@@ -532,11 +532,11 @@ class MaterialExchangeCalculator extends React.Component {
                 </div>
 
                 <button
-                  // onClick={this.saveThisResult}
+                  onClick={this.saveThisResult}
                   className="btn btn-primary w-full"
                 >
                   <i className="fa-solid fa-calculator mr-2"></i>
-                  自动计算
+                  保存本次计算结果
                 </button>
               </div>
             </div>
