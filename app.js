@@ -251,6 +251,7 @@ class MaterialExchangeCalculator extends React.Component {
           .join(", "),
         savings,
         savingsMaterialsText: Object.entries(savings)
+          .filter(([level, count]) => count > 0)
           .map(([level, count]) => `${count}个${level}`)
           .join(", "),
         normalMaterials,
