@@ -10,8 +10,8 @@ const EXCHANGE_RULES = [
   { to: 145, from: 144, count: 2 },
   { to: 146, from: 145, count: 3 },
   { to: 147, from: 146, count: 3 },
-  { to: 148, from: 147, count: 2 },
-  { to: 149, from: 148, count: 2 },
+  { to: 148, from: 147, count: 3 },
+  { to: 149, from: 148, count: 3 },
 ];
 const EXCHANGE_RULES_TO_MAP = EXCHANGE_RULES.reduce((acc, _) => {
   acc[_.to] = _;
@@ -271,8 +271,6 @@ class MaterialExchangeCalculator extends React.Component {
     const __savings = {};
     let level = Math.min(...Object.keys(__specialMaterials).map((_) => +_));
 
-    //   console.log("smallest level", level);
-
     // 对于每种特价材料，计算其节省的效果
     while (level < targetLevel) {
       const count = __specialMaterials[level];
@@ -280,8 +278,6 @@ class MaterialExchangeCalculator extends React.Component {
       if (count) {
         // 计算该等级材料在普通兑换路径中的节省
         const supplementInfo = this.calculateLevelSupplement(level, count);
-
-        //   console.log("level supplementInfo", level, supplementInfo);
 
         if (supplementInfo) {
           __savings[level] = supplementInfo.supplement;
@@ -357,17 +353,12 @@ class MaterialExchangeCalculator extends React.Component {
   drawSavingsChart = () => {
     const ctxElement = document.getElementById("savingsChart");
     if (!ctxElement) return;
-    const savings = this.state.savings;
-    const normalMaterials = this.state.normalMaterials;
     const ctx = ctxElement.getContext("2d");
 
     // 如果已有图表实例，销毁它
     if (this.savingsChart) {
       this.savingsChart.destroy();
     }
-
-    // const normalMaterialsAllCount = this.to138Count(normalMaterials);
-    // const savingsAllCount = this.to138Count(savings);
 
     const __target = EXCHANGE_RULES_TO_MAP[this.state.targetLevel];
 
@@ -470,12 +461,10 @@ class MaterialExchangeCalculator extends React.Component {
       resultTarget,
       resultMaterialsText,
       savings,
-      savingsMaterialsText,
-      normalMaterials,
+      savingsMaterialsText
     } = this.state;
 
-    const cachesLen = caches.length;
-    const hasCache = cachesLen > 0;
+    const hasCache = caches.length > 0;
 
     return (
       <div>
@@ -655,7 +644,7 @@ class MaterialExchangeCalculator extends React.Component {
             </div>
 
             {/* 缓存区 */}
-            {caches.length > 0 && (
+            {hasCache && (
               <div className={`w-full md:w-1/${hasCache ? 3 : 2}`}>
                 {caches.map((item, idx) => {
                   return (
