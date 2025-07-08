@@ -582,7 +582,7 @@ class MaterialExchangeCalculator extends React.Component {
                           ([level, count], index) => (
                             <div key={index} className="saving-item visible">
                               <span
-                                className={`material-icon material-icon-${138}`}
+                                className={`material-icon material-icon-${level}`}
                               >
                                 <i className="fa-solid fa-star"></i>
                               </span>
