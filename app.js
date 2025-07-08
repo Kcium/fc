@@ -675,7 +675,7 @@ class MaterialExchangeCalculator extends React.Component {
                           节省材料统计
                         </h3>
                         <div id="savingList" className="space-y-2">
-                          <div key={index} className="saving-item visible">
+                          <div className="saving-item visible">
                             <span
                               className={`material-icon material-icon-${level}`}
                             >
