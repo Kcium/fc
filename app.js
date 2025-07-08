@@ -439,6 +439,9 @@ class MaterialExchangeCalculator extends React.Component {
 
   saveThisResult = _.throttle(
     () => {
+      if (_.isEmpty(this.state.normalMaterials)) {
+        return;
+      }
       const { caches, ...otherState } = this.state;
       this.setState({
         ...this.createState(),
@@ -688,9 +691,9 @@ class MaterialExchangeCalculator extends React.Component {
                           className="font-bold text-lg text-primary"
                         >
                           {item.resultTarget}
-                        </span>
-                        <span className="font-bold text-secondary ml-2">
-                          节省约{item.savingPercent}%
+                          <span className="text-secondary ml-1">
+                            节省约{item.savingPercent}%
+                          </span>
                         </span>
                       </div>
                       <div className="flex justify-between items-center mb-1">
