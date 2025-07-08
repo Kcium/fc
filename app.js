@@ -677,7 +677,7 @@ class MaterialExchangeCalculator extends React.Component {
                   return (
                     <div
                       key={idx}
-                      className="bg-primary/5 rounded-xl p-4 mb-6"
+                      className="card bg-primary/5 rounded-xl p-4 mb-4"
                     >
                       <h3 className="text-lg font-medium mb-3">
                         缓存{idx + 1}
